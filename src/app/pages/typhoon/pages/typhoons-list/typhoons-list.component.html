@@ -1,0 +1,22 @@
+<nz-table #basicTable [nzData]="typhoons$ | async" [nzLoading]='loading$ | async'>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Year</th>
+        <th>Number</th>
+        <th>Latitude</th>
+        <th>Langitude</th>
+        <th>class</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of basicTable.data">
+        <td><a [routerLink]="['/typhoon', data.id]">{{data.name}}</a></td>
+        <td>{{data.year}}</td>
+        <td>{{data.number}}</td>
+        <td>{{data.address}}</td>
+        <td>{{data.address}}</td>
+        <td>{{data.address}}</td>
+      </tr>
+    </tbody>
+  </nz-table>

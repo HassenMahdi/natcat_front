@@ -1,0 +1,14 @@
+
+
+<h1>Current Typhoons</h1>
+<div *ngFor='let ty of data$ | async;'>
+    <!-- {{ty|json}} -->
+    <nz-card nzHoverable style="width:240px" [nzCover]="coverTemplate">
+        <nz-card-meta [nzTitle]="ty.analysis['Typhoon Code(Name)']" nzDescription="www.instagram.com"></nz-card-meta>
+    </nz-card>
+    <ng-template #coverTemplate>
+        <img alt="typhoon_image" src="data:image/png;base64,{{ty.analysis.base_64_image}}" />
+    </ng-template>
+
+</div>
+<!-- {{data$ | async | json}} -->

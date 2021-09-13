@@ -6,5 +6,9 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'natcat';
+  isCollapsed = false;
+  years=[]
+  constructor(){
+    for (let i = 1994; i<=new Date().getFullYear(); i ++) this.years.unshift(i)
+  }
 }
