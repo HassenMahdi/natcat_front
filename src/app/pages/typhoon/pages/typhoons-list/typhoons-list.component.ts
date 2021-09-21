@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { BehaviorSubject, Observable, observable, of, ReplaySubject } from 'rxjs';
 import { switchMap, tap } from 'rxjs/operators';
+import { TyphoonService } from 'src/app/services/api/typhoon.service';
 
 @Component({
   selector: 'app-typhoons-list',
@@ -15,7 +16,7 @@ export class TyphoonsListComponent implements OnInit {
   
   typhoons$ 
   
-  constructor(private route: ActivatedRoute) {}
+  constructor(private route: ActivatedRoute, private typhoons: TyphoonService) {}
   ngOnInit(): void {
     this.route.paramMap.subscribe((params: ParamMap) => {
       this.year$.next(+params.get('year')) 
@@ -29,15 +30,6 @@ export class TyphoonsListComponent implements OnInit {
   }
 
   loadTyphoons(year:number){
-    return new Observable((observer)=>{
-      setTimeout(() => {
-        observer.next([
-          {id: year + '12', name:'habibi', year:year, number:12},
-          {id: year + '12', name:'hobi', year:year, number:12},
-          {id: year + '12', name:'habhab', year:year, number:12},
-        ])
-        observer.complete()
-      }, 2000);
-    })
+    return this.typhoons.serachByYear(year)
   }
 }

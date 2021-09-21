@@ -1,1 +1,44 @@
-<p>typhoon-details works!</p>
+    <!-- <h1>
+        Basic Information
+    </h1>
+    
+    <h1>Forcast</h1>
+     -->
+
+    <h1>
+        Detailed Track Information
+    </h1>
+
+    <nz-space>
+      <button nz-button nzType="primary" (click)='downloadTrackingInformation()'><i nz-icon nzType="download"></i>Excel Download </button>
+      <button nz-button><i nz-icon nzType="copy"></i>Copy</button>
+    </nz-space>
+
+    <nz-table #basicTable [nzData]="data$ | async" [nzLoading]='loading$ | async'>
+        <thead>
+          <tr>
+            <th>Time</th>
+            <th>Lat</th>
+            <th>Lon</th>
+            <th>Pressure</th>
+            <th>Wind</th>
+            <th>Classification</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of basicTable.data">
+            <td>{{data.year+'-'+data.month+'-'+data.day+' '+data.hour+ ' UTC'}}</td>
+            <td>{{data.lat}}</td>
+            <td>{{data.lon}}</td>
+            <td>{{data.pressure}}</td>
+            <td>{{data.wind}}</td>
+            <td>{{data.classification}}</td>
+          </tr>
+        </tbody>
+      </nz-table>
+    
+    <h1>
+        Related Files
+    </h1>
+
+    

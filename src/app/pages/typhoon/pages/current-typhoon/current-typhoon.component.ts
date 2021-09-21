@@ -28,13 +28,17 @@ export class CurrentTyphoonComponent implements OnInit {
     return this.typhhons.getCurrent()
   }
 
-  headers = new Set()
   onRecieveData(data: any[]) {
 
     let  typhoons: any = {}
     for ( let forcast of data ){
-      const name = forcast["Typhoon Code(Name)"]
-      const typhoon = typhoons[name] || {}
+      const text = forcast["Typhoon Code(Name)"]
+      const reg = text.match(/TY(?<code>[0-9]+)\((?<name>[a-zA-Z]+)\)/)
+
+      const code = reg.groups.code
+      const name = reg.groups.name
+
+      const typhoon = typhoons[code] || {code,name,text}
       
       const is_analysis = String(forcast["Issue/Forcast Date"]).includes('Analisys')
       if (is_analysis){
@@ -45,9 +49,37 @@ export class CurrentTyphoonComponent implements OnInit {
         typhoon["forcast"].push(forcast)
       }
 
-      typhoons[name] = typhoon
+      typhoons[code] = typhoon
     }
 
     return Object.values(typhoons)
   }
+
+
+
+  isForcastVisible = false;
+  isAnalysisVisible = false;
+
+  forcastData = null
+  analysisData = null
+
+  showForcast(Forcast){
+    this.forcastData= Forcast
+    this.isForcastVisible = true
+  }
+  
+  showAnalysis(Analysis){
+    this.analysisData= {...Analysis}
+    this.isAnalysisVisible = true
+  }
+
+  handleModalClose(): void {
+    this.isForcastVisible = false;
+    this.isAnalysisVisible = false;
+    this.forcastData = null
+    this.analysisData = null
+  }
+
+  forcastKeys = ["Category","Center of probability circle","Central pressure","Direction and speed of movement","Intensity","Issue Date","Issue/Forcast Date","Maximum wind gust speed","Maximum wind speed near the center","Radius of probability circle"]
+  analysisKeys = ["30-kt wind area","Category","Center Position","Central pressure","Direction and speed of movement","Intensity","Issue Date","Issue/Forcast Date","Maximum wind gust speed","Maximum wind speed near the center","Scale"]
 }

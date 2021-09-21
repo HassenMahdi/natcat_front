@@ -1,14 +1,66 @@
 
+<nz-page-header class="site-page-header" nzTitle="Tropical Cyclone Information" nzSubtitle="This is a subtitle">
+    <nz-breadcrumb nz-page-header-breadcrumb>
+      <nz-breadcrumb-item>App</nz-breadcrumb-item>
+      <nz-breadcrumb-item>
+        <a>Typhoons</a>
+      </nz-breadcrumb-item>
+      <nz-breadcrumb-item>Current</nz-breadcrumb-item>
+    </nz-breadcrumb>
+  </nz-page-header>
 
-<h1>Current Typhoons</h1>
+
 <div *ngFor='let ty of data$ | async;'>
     <!-- {{ty|json}} -->
-    <nz-card nzHoverable style="width:240px" [nzCover]="coverTemplate">
-        <nz-card-meta [nzTitle]="ty.analysis['Typhoon Code(Name)']" nzDescription="www.instagram.com"></nz-card-meta>
+    <nz-card style="width: 320px;"  [nzCover]="coverTemplate" [nzActions]="[moreTemplate, forcastActionTemplate, AnalysisActionTemplate]"> 
+        <nz-card-meta [nzTitle]="'TY'+ty.code" [nzDescription]="ty.name"></nz-card-meta>
     </nz-card>
+
     <ng-template #coverTemplate>
-        <img alt="typhoon_image" src="data:image/png;base64,{{ty.analysis.base_64_image}}" />
+        <img nz-image alt="typhoon_image" [nzSrc]="'data:image/png;base64,'+ty.analysis.base_64_image" />
     </ng-template>
 
+    <ng-template #avatarTemplate>
+        <i nz-icon nzType="warning" nzTheme="fill" style="font-size: 24px; color: red;"></i>
+      </ng-template>
+
+    <ng-template #moreTemplate>
+        <a [routerLink]="['/typhoon', ty.code]">More</a>
+      </ng-template>
+      <ng-template #forcastActionTemplate>
+        <i nz-icon (click)="showForcast(ty.forcast)" nzType="fund" ></i>
+      </ng-template>
+      <ng-template #AnalysisActionTemplate>
+        <i nz-icon (click)="showAnalysis(ty.analysis)" nzType="info-circle" ></i>
+      </ng-template>
+
 </div>
-<!-- {{data$ | async | json}} -->
+
+<nz-modal [(nzVisible)]="isForcastVisible" nzTitle="Forcast" (nzOnCancel)="handleModalClose()" >
+  <ng-container *nzModalContent>
+    <nz-collapse>
+      <nz-collapse-panel *ngFor="let forcast of forcastData; let i = index" [nzHeader]="forcast['Issue/Forcast Date']">
+        <!-- {{forcast | json}} -->
+        <table>
+          <tr *ngFor='let key of forcastKeys'>
+            <th>{{key}}</th>
+            <td>{{forcast[key]}}</td>
+          </tr>
+        </table>
+      </nz-collapse-panel>
+    </nz-collapse>
+    
+  </ng-container>
+</nz-modal>
+
+
+<nz-modal [(nzVisible)]="isAnalysisVisible" nzTitle="Analysis" (nzOnCancel)="handleModalClose()" >
+  <ng-container *nzModalContent>
+    <table>
+      <tr *ngFor='let key of analysisKeys'>
+        <th>{{key}}</th>
+        <th>{{analysisData[key]}}</th>
+      </tr>
+    </table>
+  </ng-container>
+</nz-modal>

@@ -7,7 +7,7 @@ import { TyphoonsListComponent } from './pages/typhoons-list/typhoons-list.compo
 const routes: Routes = [
   {path:'year/:year',component:TyphoonsListComponent},
   {path:'current',component:CurrentTyphoonComponent},
-  {path:':id',component:TyphoonDetailsComponent},
+  {path:':code',component:TyphoonDetailsComponent},
 ];
 
 @NgModule({
